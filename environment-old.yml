@@ -1,0 +1,5 @@
+channels:
+- conda-forge
+dependencies:
+- python
+- conda =25.1.1

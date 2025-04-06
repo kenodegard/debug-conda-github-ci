@@ -1,0 +1,57 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  old:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Conda config
+      shell: bash -l {0}
+      run: echo -e "channels:\n  - conda-forge\n" > .condarc
+    - uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: '3.13'
+        miniforge-version: latest
+        condarc-file: .condarc
+        environment-file: environment-old.yml
+    - name: Build Test Environment
+      shell: bash -l {0}
+      timeout-minutes: 5
+      run: |
+        conda create -y -n py313 python=3.13.2 conda=25.1.1
+    - name: Test
+      shell: bash -l {0}
+      timeout-minutes: 5
+      run: |
+        conda run -n py313 which python
+        python test.py
+
+  new:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Conda config
+      shell: bash -l {0}
+      run: echo -e "channels:\n  - conda-forge\n" > .condarc
+    - uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: '3.13'
+        miniforge-version: latest
+        condarc-file: .condarc
+        environment-file: environment-new.yml
+    - name: Build Test Environment
+      shell: bash -l {0}
+      timeout-minutes: 5
+      run: |
+        conda create -y -n py313 python=3.13.2 conda=25.3.1
+    - name: Test
+      shell: bash -l {0}
+      timeout-minutes: 5
+      run: |
+        conda run -n py313 which python
+        python test.py
