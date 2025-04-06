@@ -7,7 +7,13 @@ on:
 
 jobs:
   old:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        include:
+        - operating-system: macos-latest
+        - operating-system: ubuntu-latest
+        - operating-system: windows-latest
     steps:
     - uses: actions/checkout@v4
     - name: Conda config
@@ -32,7 +38,13 @@ jobs:
         python test.py
 
   new:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        include:
+        - operating-system: macos-latest
+        - operating-system: ubuntu-latest
+        - operating-system: windows-latest
     steps:
     - uses: actions/checkout@v4
     - name: Conda config
