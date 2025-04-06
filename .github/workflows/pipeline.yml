@@ -25,6 +25,13 @@ jobs:
         miniforge-version: latest
         condarc-file: .condarc
         environment-file: environment-old.yml
+    - name: Check Environment
+      shell: bash -l {0}
+      timeout-minutes: 5
+      run: |
+        conda info
+        conda config
+        conda list
     - name: Build Test Environment
       shell: bash -l {0}
       timeout-minutes: 5
@@ -56,6 +63,13 @@ jobs:
         miniforge-version: latest
         condarc-file: .condarc
         environment-file: environment-new.yml
+    - name: Check Environment
+      shell: bash -l {0}
+      timeout-minutes: 5
+      run: |
+        conda info
+        conda config
+        conda list
     - name: Build Test Environment
       shell: bash -l {0}
       timeout-minutes: 5
