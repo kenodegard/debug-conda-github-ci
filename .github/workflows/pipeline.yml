@@ -41,8 +41,10 @@ jobs:
       shell: bash -l {0}
       timeout-minutes: 5
       run: |
-        conda run -n py313 which python
-        python test.py
+        var1=$(conda run -n py313 which python)
+        var2=$(python test.py)
+        echo ${var1} ${var2}
+        if [ "${var1}" = "${var2}" ]; then echo "success"; else exit 1; fi
 
   new:
     runs-on: ${{ matrix.operating-system }}
@@ -79,5 +81,7 @@ jobs:
       shell: bash -l {0}
       timeout-minutes: 5
       run: |
-        conda run -n py313 which python
-        python test.py
+        var1=$(conda run -n py313 which python)
+        var2=$(python test.py)
+        echo ${var1} ${var2}
+        if [ "${var1}" = "${var2}" ]; then echo "success"; else exit 1; fi
