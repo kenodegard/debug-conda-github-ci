@@ -18,7 +18,6 @@ jobs:
       with:
         python-version: '3.13'
         miniforge-version: latest
-        condarc-file: .condarc
         environment-file: environment-${{ matrix.environment-file }}.yml
         channels: conda-forge
     - name: Check Environment
