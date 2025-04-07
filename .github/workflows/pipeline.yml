@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  old:
+  debug:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
