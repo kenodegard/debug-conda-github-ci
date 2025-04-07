@@ -20,19 +20,22 @@ jobs:
         miniforge-version: latest
         environment-file: environment-${{ matrix.environment-file }}.yml
         channels: conda-forge
-    - name: Check Environment
-      shell: bash -l {0}
-      run: |
-        conda info
-        conda config
-        conda list
-    - name: Build Test Environment
-      shell: bash -l {0}
+    - name: Conda Info
+      run: conda info
+    - name: Conda Config
+      run: conda config
+    - name: Conda List
+      run: conda list
+    - name: Test Environment
       run: conda create -y -n py313 python=3.13.2
+    - name: Bash Conda Run
+      shell: bash -l {0}
+      run: echo CONDA_RUN=$(conda run -n py313 which python) >> $GITHUB_ENV
+    - name: Python Conda Run
+      shell: bash -l {0}
+      run: python test.py
     - name: Test
       shell: bash -l {0}
       run: |
-        var1=$(conda run -n py313 which python)
-        var2=$(python test.py)
-        echo ${var1} ${var2}
-        if [ "${var1}" = "${var2}" ]; then exit 0; else exit 1; fi
+        echo ${CONDA_RUN} ${PYTHON_CONDA_RUN}
+        if [ "${CONDA_RUN}" = "${PYTHON_CONDA_RUN}" ]; then exit 0; else exit 1; fi

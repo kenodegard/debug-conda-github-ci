@@ -27,11 +27,15 @@ if __name__ == '__main__':
         stderr=PIPE,
     )
     stdout = output.stdout
-    stderr = output.stderr
     print(stdout)
+    path = Path(stdout.strip())
 
+    stderr = output.stderr
     m = re.search(r"CONDA_TEST_SAVE_TEMPS :: .+ (\S+)\n", stderr)
     if m:
         batch = m.group(1)
         print(f"Batch file: {batch}", file=sys.stderr)
         print(Path(batch).read_text(), file=sys.stderr)
+
+    if github_env := os.getenv("GITHUB_ENV"):
+        Path(github_env).write_text(f"PYTHON_CONDA_RUN={path}")
